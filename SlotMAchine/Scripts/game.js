@@ -45,31 +45,52 @@ function buttonOver() {
    // buttonBitmap.alpha = 0.5;
 }
 
-function main() {
+function btnSpinClicked()
+{
+    console.log("Spin button clicked");
+}
 
-    game = new createjs.Container();
+function btnSpinOut(bitmap)
+{
+    //btnSpin.alpha = 1;
+    bitmap.alpha = 1;
+}
+
+function btnSpinOver(bitmap)
+{
+    //btnSpin.alpha = 0.75;
+    bitmap.alpha = 0.75;
+}
+
+function createGUI()
+{
     background = new createjs.Bitmap("assets/images/background3.fw.png");
 
     //Creating and Adding the buttons
     btnBetMax = new createjs.Bitmap("assets/images/btnBetMax.fw.png");
     btnBetMax.x = 236;
-    btnBetMax.y = 362;
+    btnBetMax.y = 362 + 7;
 
     btnBetOne = new createjs.Bitmap("assets/images/btnBetOne.fw.png");
     btnBetOne.x = 202;
-    btnBetOne.y = 362;
+    btnBetOne.y = 362 + 7;
 
     btnPwr = new createjs.Bitmap("assets/images/btnPower.fw.png");
     btnPwr.x = 133;
-    btnPwr.y = 362;
+    btnPwr.y = 362 + 7;
 
     btnReset = new createjs.Bitmap("assets/images/btnReset.fw.png");
     btnReset.x = 167;
-    btnReset.y = 362;
+    btnReset.y = 362 + 7;
 
+    //Spin Button
     btnSpin = new createjs.Bitmap("assets/images/btnSpin.fw.png");
     btnSpin.x = 270;
-    btnSpin.y = 362;
+    btnSpin.y = 362 + 7;
+    //Event Listener (Spin Button)
+    btnSpin.addEventListener("click", btnSpinClicked);
+    btnSpin.addEventListener("mouseout", btnSpinOut, this);
+    btnSpin.addEventListener("mouseover", btnSpinOver, this);
 
 
     game.addChild(background);
@@ -78,6 +99,12 @@ function main() {
     game.addChild(btnPwr);
     game.addChild(btnReset);
     game.addChild(btnSpin);
+}
+
+function main() {
+
+    game = new createjs.Container();
+    createGUI();
 
     stage.addChild(game);
     //// This is where all the work happens
