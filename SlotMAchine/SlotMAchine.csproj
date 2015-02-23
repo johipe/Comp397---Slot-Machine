@@ -57,6 +57,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\images\background2.fw.png" />
+    <Content Include="assets\images\background3.fw.png" />
+    <Content Include="assets\images\btnBetMax.fw.png" />
+    <Content Include="assets\images\btnBetOne.fw.png" />
+    <Content Include="assets\images\btnPower.fw.png" />
+    <Content Include="assets\images\btnReset.fw.png" />
+    <Content Include="assets\images\btnSpin.fw.png" />
     <Content Include="assets\images\button-small.png" />
     <Content Include="assets\images\button.png" />
     <Content Include="COMP397-CreateJSBoilerPlate.csproj" />
