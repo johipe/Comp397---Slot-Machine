@@ -70,6 +70,7 @@ function checkJackPot() {
     /* compare two random values */
     var jackPotTry = Math.floor(Math.random() * 51 + 1);
     var jackPotWin = Math.floor(Math.random() * 51 + 1);
+    jackPotTry = jackPotWin;
     if (jackPotTry == jackPotWin) {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
@@ -95,9 +96,7 @@ function showLossAction() {
 
 /* Utility function to show Player Stats */
 function showPlayerStats() {
-    
-
-
+   
     winRatio = winNumber / turn;
     console.log("Jackpot: " + jackpot);
     console.log("Player Money: " + playerMoney);
@@ -289,6 +288,7 @@ function buttonPoweClicked()
 
 function btnSpinClicked()
 {
+    winnings = 0;
     for (var index = 0; index < 3; index++)
     {
         reelContainers[index].removeAllChildren();
