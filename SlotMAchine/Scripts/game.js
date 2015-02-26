@@ -70,7 +70,7 @@ function checkJackPot() {
     /* compare two random values */
     var jackPotTry = Math.floor(Math.random() * 51 + 1);
     var jackPotWin = Math.floor(Math.random() * 51 + 1);
-    jackPotTry = jackPotWin;
+    //jackPotTry = jackPotWin;
     if (jackPotTry == jackPotWin) {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
@@ -289,7 +289,10 @@ function buttonPoweClicked()
 
 function btnSpinClicked()
 {
-    createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
+
+
+
+        createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
   
     createjs.Sound.play("sound");
 
