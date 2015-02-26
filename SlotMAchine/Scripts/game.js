@@ -80,9 +80,15 @@ function checkJackPot() {
 /* Utility function to show a win message and increase player money */
 function showWinAction() {
     playerMoney += winnings;
-    consolo.log("You Won: $" + winnings);
+    console.log("You Won: $" + winnings);
     resetFruitTally();
     checkJackPot();
+}
+
+function showLossAction() {
+    //playerMoney -= playerBet;
+    console.log("You Lost!");
+    resetFruitTally();
 }
 
 /* Utility function to show Player Stats */
@@ -97,6 +103,7 @@ function showPlayerStats() {
     console.log("Wins: " + winNumber);
     console.log("Losses: " + lossNumber);
     console.log("Win Ratio: " + (winRatio * 100).toFixed(2) + "%");
+    console.log("Bet" + playerBet);
 }
 
 /* Utility function to reset all fruit tallies */
@@ -109,6 +116,9 @@ function resetFruitTally() {
     bells = 0;
     sevens = 0;
     blanks = 0;
+    //for (var index = 0; index < 3; index++) {
+    //    reelContainers[index].removeAllChildren();
+    //}
 }
 
 /* Utility function to reset the player stats */
@@ -121,6 +131,10 @@ function resetAll() {
     winNumber = 0;
     lossNumber = 0;
     winRatio = 0;
+    updateBet();
+    updateCredits();
+    updateJackpot();
+    updatePayout();
 }
 
 /* Utility function to check if a value falls within a range of bounds */
@@ -236,6 +250,7 @@ function determineWinnings() {
     }
     else {
         lossNumber++;
+        showLossAction();
         //showLossMessage();
     }
 
@@ -280,21 +295,18 @@ function btnSpinClicked()
     fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
     console.log(fruits);
 
-    
-
-
-    //btnReset1 = new createjs.Bitmap("assets/images/grapes.png");
-    //btnReset1.x = 167;
-    //btnReset1.y = 362 + 7;
-
-    //game.addChild(btnReset1);
-
     for (var index = 0; index < 3; index++)
     {
         tiles[index] = new createjs.Bitmap("assets/images/" + spinResult[index] + ".png");
         reelContainers[index].addChild(tiles[index]);
-        
     }
+
+    determineWinnings();
+    updateCredits();
+    playerBet = 0;
+    updateBet();
+    turn++;
+    showPlayerStats();
 }
 
 function btnSpinOut(bitmap)
@@ -313,22 +325,48 @@ function btnBetMaxClicked()
 {
 
     playerBet += 100;
-    playerMoney - +100;
+    playerMoney -=100;
+    updateBet();
+    updateCredits();
 
-
-   // jackpotContainer.removeAllChildren();
-   // jackpot = jackpot + 10;
-   // //jackpotTxt.Text = "alo";
-   // //onsole.log("btn Bet Max Clicked");
-   //// console.log("jackpot: " + jackpot);
-   // jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
-   // jackpotContainer.addChild(jackpotTxt);
 }
+
+function updateBet()
+{
+    betContainer.removeAllChildren();
+    betTxt = new createjs.Text(playerBet, "bold 20px Courier", "#FFFFFF");
+    betContainer.addChild(betTxt);
+}
+
+function updateCredits()
+{
+    creditsContainer.removeAllChildren();
+    creditsTxt = new createjs.Text(playerMoney, "bold 20px Courier", "#FFFFFF");
+    creditsContainer.addChild(creditsTxt);
+}
+
+function updatePayout()
+{ }
+
+function updateJackpot()
+{
+    // jackpotContainer.removeAllChildren();
+    // jackpot = jackpot + 10;
+    // //jackpotTxt.Text = "alo";
+    // //onsole.log("btn Bet Max Clicked");
+    //// console.log("jackpot: " + jackpot);
+    // jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
+    // jackpotContainer.addChild(jackpotTxt);
+}
+
+
 
 function btnBetOneClicked()
 {
     playerBet += 1;
-    playerMoney -=100;
+    playerMoney -= 1;
+    updateBet();
+    updateCredits();
 }
 
 function createGUI()
