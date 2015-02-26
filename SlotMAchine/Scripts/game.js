@@ -5,6 +5,10 @@ var stage;
 
 var tiles = [];
 var reelContainers = [];
+var jackpotContainer;
+var creditsContainer;
+var betContainer;
+var payoutContainer;
 //var reels = new createjs.Bitmap[3];
 //var helloText;
 //var buttonBitmap;
@@ -39,6 +43,11 @@ var btnPwr;
 var btnReset;
 var btnSpin;
 
+var jackpotTxt;
+var creditsTxt;
+var betTxt;
+var payoutTxt;
+
 // FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 function init() {
     canvas = document.getElementById("canvas");
@@ -56,6 +65,40 @@ function gameLoop() {
     stage.update();
 }
 
+/* Check to see if the player won the jackpot */
+function checkJackPot() {
+    /* compare two random values */
+    var jackPotTry = Math.floor(Math.random() * 51 + 1);
+    var jackPotWin = Math.floor(Math.random() * 51 + 1);
+    if (jackPotTry == jackPotWin) {
+        alert("You Won the $" + jackpot + " Jackpot!!");
+        playerMoney += jackpot;
+        jackpot = 1000;
+    }
+}
+
+/* Utility function to show a win message and increase player money */
+function showWinAction() {
+    playerMoney += winnings;
+    consolo.log("You Won: $" + winnings);
+    resetFruitTally();
+    checkJackPot();
+}
+
+/* Utility function to show Player Stats */
+function showPlayerStats() {
+    
+
+
+    winRatio = winNumber / turn;
+    console.log("Jackpot: " + jackpot);
+    console.log("Player Money: " + playerMoney);
+    console.log("Turn: " + turn);
+    console.log("Wins: " + winNumber);
+    console.log("Losses: " + lossNumber);
+    console.log("Win Ratio: " + (winRatio * 100).toFixed(2) + "%");
+}
+
 /* Utility function to reset all fruit tallies */
 function resetFruitTally() {
     grapes = 0;
@@ -70,7 +113,7 @@ function resetFruitTally() {
 
 /* Utility function to reset the player stats */
 function resetAll() {
-    playerMoney = 1000;
+   playerMoney = 1000;
     winnings = 0;
     jackpot = 5000;
     turn = 0;
@@ -188,6 +231,7 @@ function determineWinnings() {
             winnings = playerBet * 1;
         }
         winNumber++;
+        showWinAction();
         //showWinMessage();
     }
     else {
@@ -265,6 +309,28 @@ function btnSpinOver(bitmap)
     bitmap.alpha = 0.75;
 }
 
+function btnBetMaxClicked()
+{
+
+    playerBet += 100;
+    playerMoney - +100;
+
+
+   // jackpotContainer.removeAllChildren();
+   // jackpot = jackpot + 10;
+   // //jackpotTxt.Text = "alo";
+   // //onsole.log("btn Bet Max Clicked");
+   //// console.log("jackpot: " + jackpot);
+   // jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
+   // jackpotContainer.addChild(jackpotTxt);
+}
+
+function btnBetOneClicked()
+{
+    playerBet += 1;
+    playerMoney -=100;
+}
+
 function createGUI()
 {
     background = new createjs.Bitmap("assets/images/background3.fw.png");
@@ -273,14 +339,14 @@ function createGUI()
     btnBetMax = new createjs.Bitmap("assets/images/btnBetMax.fw.png");
     btnBetMax.x = 236;
     btnBetMax.y = 362 + 7;
-    btnBetMax.addEventListener("click", btnSpinClicked);
+    btnBetMax.addEventListener("click", btnBetMaxClicked);
     btnBetMax.addEventListener("mouseout", buttonOut);
     btnBetMax.addEventListener("mouseover", buttonOver);
 
     btnBetOne = new createjs.Bitmap("assets/images/btnBetOne.fw.png");
     btnBetOne.x = 202;
     btnBetOne.y = 362 + 7;
-    btnBetOne.addEventListener("click", btnSpinClicked);
+    btnBetOne.addEventListener("click", btnBetOneClicked);
     btnBetOne.addEventListener("mouseout", buttonOut);
     btnBetOne.addEventListener("mouseover", buttonOver);
 
@@ -307,6 +373,36 @@ function createGUI()
     btnSpin.addEventListener("mouseout", buttonOut);
     btnSpin.addEventListener("mouseover", buttonOver);
 
+    //Jackpot Label
+    jackpotContainer = new createjs.Container();
+    jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
+    jackpotContainer.x = 167 + 7;
+    jackpotContainer.y = 172 - 14;
+
+    jackpotContainer.addChild(jackpotTxt);
+
+    //Credits Label
+    creditsContainer = new createjs.Container();
+    creditsTxt = new createjs.Text(playerMoney, "bold 20px Courier", "#FFFFFF");
+    creditsContainer.x = 103 + 7;
+    creditsContainer.y = 313 - 11;
+    creditsContainer.addChild(creditsTxt);
+ 
+    //Bets Label
+    betContainer = new createjs.Container();
+    betTxt = new createjs.Text(playerBet, "bold 20px Courier", "#FFFFFF");
+    betContainer.x = 200;
+    betContainer.y = 313 - 11;
+    betContainer.addChild(betTxt);
+
+    //Payout Label
+    payoutContainer = new createjs.Container();
+    payoutTxt = new createjs.Text(winnings, "bold 20px Courier", "#FFFFFF");
+    payoutContainer.x = 251;
+    payoutContainer.y = 313 - 11;
+    payoutContainer.addChild(payoutTxt);
+    
+
 
     game.addChild(background);
     game.addChild(btnBetMax);
@@ -314,6 +410,10 @@ function createGUI()
     game.addChild(btnPwr);
     game.addChild(btnReset);
     game.addChild(btnSpin);
+    game.addChild(jackpotContainer);
+    game.addChild(creditsContainer);
+    game.addChild(betContainer);
+    game.addChild(payoutContainer);
 
     for (var index = 0; index < 3; index++)
     {
@@ -345,7 +445,7 @@ function main() {
 
     stage.addChild(game);
     //// This is where all the work happens
-    //helloText = new createjs.Text("Hello World!", "40px Consolas", "#000000");
+    //helloText = new createjs.Text("Hello World!", "40px Consolas", "#FFFFFF");
     //stage.addChild(helloText); // First Child Object that we add to the stage
 
     //// Green Button
