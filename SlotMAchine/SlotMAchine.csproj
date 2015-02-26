@@ -59,6 +59,10 @@
   <ItemGroup>
     <Content Include="assets\images\background2.fw.png" />
     <Content Include="assets\images\background3.fw.png" />
+    <Content Include="assets\images\bananas.png" />
+    <Content Include="assets\images\bars.png" />
+    <Content Include="assets\images\bells.png" />
+    <Content Include="assets\images\blanks.png" />
     <Content Include="assets\images\btnBetMax.fw.png" />
     <Content Include="assets\images\btnBetOne.fw.png" />
     <Content Include="assets\images\btnPower.fw.png" />
@@ -66,6 +70,10 @@
     <Content Include="assets\images\btnSpin.fw.png" />
     <Content Include="assets\images\button-small.png" />
     <Content Include="assets\images\button.png" />
+    <Content Include="assets\images\cherries.png" />
+    <Content Include="assets\images\grapes.png" />
+    <Content Include="assets\images\oranges.png" />
+    <Content Include="assets\images\sevens.png" />
     <Content Include="COMP397-CreateJSBoilerPlate.csproj" />
     <Content Include="css\game.css" />
     <Content Include="index.html" />
