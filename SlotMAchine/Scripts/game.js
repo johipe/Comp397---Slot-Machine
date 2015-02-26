@@ -74,7 +74,9 @@ function checkJackPot() {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
         jackpot = 1000;
+        updateJackpot();
     }
+    
 }
 
 /* Utility function to show a win message and increase player money */
@@ -104,6 +106,7 @@ function showPlayerStats() {
     console.log("Losses: " + lossNumber);
     console.log("Win Ratio: " + (winRatio * 100).toFixed(2) + "%");
     console.log("Bet" + playerBet);
+    console.log("Winnings" + winnings);
 }
 
 /* Utility function to reset all fruit tallies */
@@ -116,9 +119,6 @@ function resetFruitTally() {
     bells = 0;
     sevens = 0;
     blanks = 0;
-    //for (var index = 0; index < 3; index++) {
-    //    reelContainers[index].removeAllChildren();
-    //}
 }
 
 /* Utility function to reset the player stats */
@@ -135,6 +135,10 @@ function resetAll() {
     updateCredits();
     updateJackpot();
     updatePayout();
+    for (var index = 0; index < 3; index++) {
+        reelContainers[index].removeAllChildren();
+    }
+
 }
 
 /* Utility function to check if a value falls within a range of bounds */
@@ -305,6 +309,7 @@ function btnSpinClicked()
     updateCredits();
     playerBet = 0;
     updateBet();
+    updatePayout();
     turn++;
     showPlayerStats();
 }
@@ -334,7 +339,7 @@ function btnBetMaxClicked()
 function updateBet()
 {
     betContainer.removeAllChildren();
-    betTxt = new createjs.Text(playerBet, "bold 20px Courier", "#FFFFFF");
+    betTxt = new createjs.Text(playerBet, "bold 15px Courier", "#FFFFFF");
     betContainer.addChild(betTxt);
 }
 
@@ -346,17 +351,21 @@ function updateCredits()
 }
 
 function updatePayout()
-{ }
+{
+    payoutContainer.removeAllChildren();
+    payoutTxt = new createjs.Text(winnings, "bold 20px Courier", "#FFFFFF");
+    payoutContainer.addChild(payoutTxt);
+}
 
 function updateJackpot()
 {
-    // jackpotContainer.removeAllChildren();
+    jackpotContainer.removeAllChildren();
     // jackpot = jackpot + 10;
     // //jackpotTxt.Text = "alo";
     // //onsole.log("btn Bet Max Clicked");
     //// console.log("jackpot: " + jackpot);
-    // jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
-    // jackpotContainer.addChild(jackpotTxt);
+    jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
+    jackpotContainer.addChild(jackpotTxt);
 }
 
 
@@ -428,9 +437,9 @@ function createGUI()
  
     //Bets Label
     betContainer = new createjs.Container();
-    betTxt = new createjs.Text(playerBet, "bold 20px Courier", "#FFFFFF");
-    betContainer.x = 200;
-    betContainer.y = 313 - 11;
+    betTxt = new createjs.Text(playerBet, "bold 15px Courier", "#FFFFFF");
+    betContainer.x = 196;
+    betContainer.y = 314 - 10;
     betContainer.addChild(betTxt);
 
     //Payout Label
