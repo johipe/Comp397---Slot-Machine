@@ -2,6 +2,10 @@
 // VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 var canvas;
 var stage;
+
+var tiles = [];
+var reelContainers = [];
+//var reels = new createjs.Bitmap[3];
 //var helloText;
 //var buttonBitmap;
 
@@ -100,31 +104,31 @@ function Reels() {
                 blanks++;
                 break;
             case checkRange(outCome[spin], 28, 37): // 15.4% probability
-                betLine[spin] = "Grapes";
+                betLine[spin] = "grapes";
                 grapes++;
                 break;
             case checkRange(outCome[spin], 38, 46): // 13.8% probability
-                betLine[spin] = "Banana";
+                betLine[spin] = "banana";
                 bananas++;
                 break;
             case checkRange(outCome[spin], 47, 54): // 12.3% probability
-                betLine[spin] = "Orange";
+                betLine[spin] = "orange";
                 oranges++;
                 break;
             case checkRange(outCome[spin], 55, 59): //  7.7% probability
-                betLine[spin] = "Cherry";
+                betLine[spin] = "cherry";
                 cherries++;
                 break;
             case checkRange(outCome[spin], 60, 62): //  4.6% probability
-                betLine[spin] = "Bar";
+                betLine[spin] = "bar";
                 bars++;
                 break;
             case checkRange(outCome[spin], 63, 64): //  3.1% probability
-                betLine[spin] = "Bell";
+                betLine[spin] = "bell";
                 bells++;
                 break;
             case checkRange(outCome[spin], 65, 65): //  1.5% probability
-                betLine[spin] = "Seven";
+                betLine[spin] = "seven";
                 sevens++;
                 break;
         }
@@ -197,20 +201,56 @@ function buttonClicked() {
     //helloText.text = "Goodbye!";
 }
 
-function buttonOut() {
+function buttonOut(event) {
+    event.currentTarget.alpha = 1;
     //buttonBitmap.alpha = 1;
 }
 
-function buttonOver() {
+function buttonOver(event) {
+    event.currentTarget.alpha = 0.5;
    // buttonBitmap.alpha = 0.5;
+}
+
+function buttonResetClicked()
+{
+    resetFruitTally();
+    resetAll();
+
+    //init();
+}
+
+function buttonPoweClicked()
+{
+    this.window.close();
 }
 
 function btnSpinClicked()
 {
+    for (var index = 0; index < 3; index++)
+    {
+        reelContainers[index].removeAllChildren();
+    }
+
     console.log("Spin button clicked");
     spinResult = Reels();
     fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
     console.log(fruits);
+
+    
+
+
+    //btnReset1 = new createjs.Bitmap("assets/images/grapes.png");
+    //btnReset1.x = 167;
+    //btnReset1.y = 362 + 7;
+
+    //game.addChild(btnReset1);
+
+    for (var index = 0; index < 3; index++)
+    {
+        tiles[index] = new createjs.Bitmap("assets/images/" + spinResult[index] + ".png");
+        reelContainers[index].addChild(tiles[index]);
+        
+    }
 }
 
 function btnSpinOut(bitmap)
@@ -233,18 +273,30 @@ function createGUI()
     btnBetMax = new createjs.Bitmap("assets/images/btnBetMax.fw.png");
     btnBetMax.x = 236;
     btnBetMax.y = 362 + 7;
+    btnBetMax.addEventListener("click", btnSpinClicked);
+    btnBetMax.addEventListener("mouseout", buttonOut);
+    btnBetMax.addEventListener("mouseover", buttonOver);
 
     btnBetOne = new createjs.Bitmap("assets/images/btnBetOne.fw.png");
     btnBetOne.x = 202;
     btnBetOne.y = 362 + 7;
+    btnBetOne.addEventListener("click", btnSpinClicked);
+    btnBetOne.addEventListener("mouseout", buttonOut);
+    btnBetOne.addEventListener("mouseover", buttonOver);
 
     btnPwr = new createjs.Bitmap("assets/images/btnPower.fw.png");
     btnPwr.x = 133;
     btnPwr.y = 362 + 7;
+    btnPwr.addEventListener("click", buttonPoweClicked);
+    btnPwr.addEventListener("mouseout", buttonOut);
+    btnPwr.addEventListener("mouseover", buttonOver);
 
     btnReset = new createjs.Bitmap("assets/images/btnReset.fw.png");
     btnReset.x = 167;
     btnReset.y = 362 + 7;
+    btnReset.addEventListener("click", buttonResetClicked);
+    btnReset.addEventListener("mouseout", buttonOut);
+    btnReset.addEventListener("mouseover", buttonOver);
 
     //Spin Button
     btnSpin = new createjs.Bitmap("assets/images/btnSpin.fw.png");
@@ -252,8 +304,8 @@ function createGUI()
     btnSpin.y = 362 + 7;
     //Event Listener (Spin Button)
     btnSpin.addEventListener("click", btnSpinClicked);
-    btnSpin.addEventListener("mouseout", btnSpinOut, this);
-    btnSpin.addEventListener("mouseover", btnSpinOver, this);
+    btnSpin.addEventListener("mouseout", buttonOut);
+    btnSpin.addEventListener("mouseover", buttonOver);
 
 
     game.addChild(background);
@@ -262,11 +314,33 @@ function createGUI()
     game.addChild(btnPwr);
     game.addChild(btnReset);
     game.addChild(btnSpin);
+
+    for (var index = 0; index < 3; index++)
+    {
+    reelContainers[index] = new createjs.Container();
+    game.addChild(reelContainers[index]);
+    }
+
+    //reelContainers[0] = new createjs.Container();
+    reelContainers[0].x = 105 - 8;
+    reelContainers[0].y = 217 - 10;
+
+
+    //reelContainers[1] = new createjs.Container();
+    reelContainers[1].x = 176 - 8;
+    reelContainers[1].y = 217 - 10;
+
+
+    //reelContainers[2] = new createjs.Container();
+    reelContainers[2].x = 246 - 8;
+    reelContainers[2].y = 217 - 10;
+    
 }
 
 function main() {
 
     game = new createjs.Container();
+    reelContainers = new createjs.Container();
     createGUI();
 
     stage.addChild(game);

@@ -59,10 +59,10 @@
   <ItemGroup>
     <Content Include="assets\images\background2.fw.png" />
     <Content Include="assets\images\background3.fw.png" />
-    <Content Include="assets\images\bananas.png" />
-    <Content Include="assets\images\bars.png" />
-    <Content Include="assets\images\bells.png" />
-    <Content Include="assets\images\blanks.png" />
+    <Content Include="assets\images\banana.png" />
+    <Content Include="assets\images\bar.png" />
+    <Content Include="assets\images\bell.png" />
+    <Content Include="assets\images\blank.png" />
     <Content Include="assets\images\btnBetMax.fw.png" />
     <Content Include="assets\images\btnBetOne.fw.png" />
     <Content Include="assets\images\btnPower.fw.png" />
@@ -70,10 +70,10 @@
     <Content Include="assets\images\btnSpin.fw.png" />
     <Content Include="assets\images\button-small.png" />
     <Content Include="assets\images\button.png" />
-    <Content Include="assets\images\cherries.png" />
+    <Content Include="assets\images\cherry.png" />
     <Content Include="assets\images\grapes.png" />
-    <Content Include="assets\images\oranges.png" />
-    <Content Include="assets\images\sevens.png" />
+    <Content Include="assets\images\orange.png" />
+    <Content Include="assets\images\seven.png" />
     <Content Include="COMP397-CreateJSBoilerPlate.csproj" />
     <Content Include="css\game.css" />
     <Content Include="index.html" />
