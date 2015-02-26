@@ -57,6 +57,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\audio\spin.wav" />
+    <Content Include="assets\audio\win.wav" />
     <Content Include="assets\images\background2.fw.png" />
     <Content Include="assets\images\background3.fw.png" />
     <Content Include="assets\images\banana.png" />
@@ -107,7 +109,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\audio\" />
     <Folder Include="assets\fonts\" />
     <Folder Include="bin\" />
     <Folder Include="obj\Debug\TempPE\" />

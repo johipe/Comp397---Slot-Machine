@@ -74,6 +74,7 @@ function checkJackPot() {
     if (jackPotTry == jackPotWin) {
         alert("You Won the $" + jackpot + " Jackpot!!");
         playerMoney += jackpot;
+        winnings += jackpot;
         jackpot = 1000;
         updateJackpot();
     }
@@ -288,6 +289,10 @@ function buttonPoweClicked()
 
 function btnSpinClicked()
 {
+    createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
+  
+    createjs.Sound.play("sound");
+
     winnings = 0;
     for (var index = 0; index < 3; index++)
     {
@@ -328,11 +333,21 @@ function btnSpinOver(bitmap)
 
 function btnBetMaxClicked()
 {
+    if (playerMoney == 0) {
+        if (confirm("You ran out of Money! \nDo you want to play again?")) {
+            resetAll();
+            showPlayerStats();
+        }
+    }
 
-    playerBet += 100;
-    playerMoney -=100;
-    updateBet();
-    updateCredits();
+    else if (100 <= playerMoney) {
+        playerBet += 100;
+        playerMoney -= 100;
+        updateBet();
+        updateCredits();
+    }
+
+
 
 }
 
@@ -487,6 +502,7 @@ function createGUI()
 function main() {
 
     game = new createjs.Container();
+   
     reelContainers = new createjs.Container();
     createGUI();
 
