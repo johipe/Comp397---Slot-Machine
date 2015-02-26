@@ -294,32 +294,35 @@ function btnSpinClicked()
 
         createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
   
-    createjs.Sound.play("sound");
+        createjs.Sound.play("sound");
+        if (playerBet <= 0) {
+            alert("Please enter a valid bet amount");
+        } else {
 
-    winnings = 0;
-    for (var index = 0; index < 3; index++)
-    {
-        reelContainers[index].removeAllChildren();
-    }
 
-    console.log("Spin button clicked");
-    spinResult = Reels();
-    fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
-    console.log(fruits);
+            winnings = 0;
+            for (var index = 0; index < 3; index++) {
+                reelContainers[index].removeAllChildren();
+            }
 
-    for (var index = 0; index < 3; index++)
-    {
-        tiles[index] = new createjs.Bitmap("assets/images/" + spinResult[index] + ".png");
-        reelContainers[index].addChild(tiles[index]);
-    }
+            console.log("Spin button clicked");
+            spinResult = Reels();
+            fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
+            console.log(fruits);
 
-    determineWinnings();
-    updateCredits();
-    playerBet = 0;
-    updateBet();
-    updatePayout();
-    turn++;
-    showPlayerStats();
+            for (var index = 0; index < 3; index++) {
+                tiles[index] = new createjs.Bitmap("assets/images/" + spinResult[index] + ".png");
+                reelContainers[index].addChild(tiles[index]);
+            }
+
+            determineWinnings();
+            updateCredits();
+            playerBet = 0;
+            updateBet();
+            updatePayout();
+            turn++;
+            showPlayerStats();
+        }
 }
 
 function btnSpinOut(bitmap)
