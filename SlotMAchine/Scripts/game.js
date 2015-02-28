@@ -1,5 +1,5 @@
-﻿// CreateJS Boilerplate for COMP397
-// VARIABLES ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+﻿// Web Slot Machine
+// VARIABLES 
 var canvas;
 var stage;
 
@@ -48,7 +48,7 @@ var creditsTxt;
 var betTxt;
 var payoutTxt;
 
-// FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// FUNCTIONS 
 function init() {
     canvas = document.getElementById("canvas");
     stage = new createjs.Stage(canvas); // Parent Object
@@ -81,7 +81,7 @@ function checkJackPot() {
     
 }
 
-/* Utility function to show a win message and increase player money */
+/* Utility function with the actions to execute if the player wins */
 function showWinAction() {
     playerMoney += winnings;
     console.log("You Won: $" + winnings);
@@ -89,13 +89,14 @@ function showWinAction() {
     checkJackPot();
 }
 
+/* Utility function with the actions to execute if the player loss */
 function showLossAction() {
     //playerMoney -= playerBet;
     console.log("You Lost!");
     resetFruitTally();
 }
 
-/* Utility function to show Player Stats */
+/* Utility function to show Player Stats - on Console */
 function showPlayerStats() {
    
     winRatio = winNumber / turn;
@@ -121,7 +122,7 @@ function resetFruitTally() {
     blanks = 0;
 }
 
-/* Utility function to reset the player stats */
+/* Utility function to reset the player stats and the reels*/
 function resetAll() {
    playerMoney = 1000;
     winnings = 0;
@@ -250,6 +251,7 @@ function determineWinnings() {
         }
         winNumber++;
         showWinAction();
+        createjs.Sound.play("winSound");
         //showWinMessage();
     }
     else {
@@ -260,62 +262,70 @@ function determineWinnings() {
 
 }
 
-function buttonClicked() {
-    //helloText.text = "Goodbye!";
-}
 
+/*This function change the color of the button on the mouseOut event*/
 function buttonOut(event) {
     event.currentTarget.alpha = 1;
     //buttonBitmap.alpha = 1;
 }
 
+/*This function change the color of the button on the mouseOver event*/
 function buttonOver(event) {
     event.currentTarget.alpha = 0.5;
    // buttonBitmap.alpha = 0.5;
 }
 
+/*This functon is executed when the Reset Button is clicked*/
 function buttonResetClicked()
 {
     resetFruitTally();
     resetAll();
-
     //init();
 }
 
+/*This functon is executed when the Spin Button is clicked*/
 function buttonPoweClicked()
 {
     this.window.close();
 }
 
+/*This functon is executed whrn the Spin Button is clicked*/
 function btnSpinClicked()
 {
+        //createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
+    
+    //var instance = createjs.Sound.play("spinSound");  // play using id.  Could also use full source path or event.src.
+    //instance.on("complete", createjs.proxy(this.handleComplete, this));
+    //instance.volume = 0.5;
 
 
-
-        createjs.Sound.registerSound("assets/audio/spin.wav", "sound");
-  
-        createjs.Sound.play("sound");
+        /*Validate if a bet has been place before spinning the reels*/
         if (playerBet <= 0) {
             alert("Please enter a valid bet amount");
         } else {
-
-
+            //Play Spin sound
+            createjs.Sound.play("spinSound");
+            /*Setting payout to 0 before each spinning*/
             winnings = 0;
+            /*Deleting previous reels*/
             for (var index = 0; index < 3; index++) {
                 reelContainers[index].removeAllChildren();
             }
-
-            console.log("Spin button clicked");
+            //console.log("Spin button clicked");
             spinResult = Reels();
             fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
             console.log(fruits);
 
+            //Adding the result to the reels containers
             for (var index = 0; index < 3; index++) {
                 tiles[index] = new createjs.Bitmap("assets/images/" + spinResult[index] + ".png");
                 reelContainers[index].addChild(tiles[index]);
             }
-
+            
+            //check if the player won
             determineWinnings();
+
+            //Update info on labels
             updateCredits();
             playerBet = 0;
             updateBet();
@@ -325,38 +335,26 @@ function btnSpinClicked()
         }
 }
 
-function btnSpinOut(bitmap)
-{
-    //btnSpin.alpha = 1;
-    bitmap.alpha = 1;
-}
-
-function btnSpinOver(bitmap)
-{
-    //btnSpin.alpha = 0.75;
-    bitmap.alpha = 0.75;
-}
-
+/*This functon is executed when the BetMax Button is clicked*/
 function btnBetMaxClicked()
 {
+    //Validate that the player has money to place the bet
     if (playerMoney == 0) {
         if (confirm("You ran out of Money! \nDo you want to play again?")) {
             resetAll();
             showPlayerStats();
         }
     }
-
+        //update player bet and credits
     else if (100 <= playerMoney) {
         playerBet += 100;
         playerMoney -= 100;
         updateBet();
         updateCredits();
     }
-
-
-
 }
 
+/*This functon updates the Bet Label on GUI*/
 function updateBet()
 {
     betContainer.removeAllChildren();
@@ -364,13 +362,14 @@ function updateBet()
     betContainer.addChild(betTxt);
 }
 
+/*This functon updates the Credits Label on GUI*/
 function updateCredits()
 {
     creditsContainer.removeAllChildren();
     creditsTxt = new createjs.Text(playerMoney, "bold 20px Courier", "#FFFFFF");
     creditsContainer.addChild(creditsTxt);
 }
-
+/*This functon updates the Payout Label on GUI*/
 function updatePayout()
 {
     payoutContainer.removeAllChildren();
@@ -378,19 +377,16 @@ function updatePayout()
     payoutContainer.addChild(payoutTxt);
 }
 
+/*This functon updates the jackpot Label on GUI*/
 function updateJackpot()
 {
     jackpotContainer.removeAllChildren();
-    // jackpot = jackpot + 10;
-    // //jackpotTxt.Text = "alo";
-    // //onsole.log("btn Bet Max Clicked");
-    //// console.log("jackpot: " + jackpot);
     jackpotTxt = new createjs.Text(jackpot, "bold 20px Courier", "#FFFFFF");
     jackpotContainer.addChild(jackpotTxt);
 }
 
 
-
+/*This functon is executed when the BetOne Button is clicked*/
 function btnBetOneClicked()
 {
     playerBet += 1;
@@ -399,6 +395,7 @@ function btnBetOneClicked()
     updateCredits();
 }
 
+/*This function Build the GUI*/
 function createGUI()
 {
     background = new createjs.Bitmap("assets/images/background3.fw.png");
@@ -436,6 +433,7 @@ function createGUI()
     btnSpin = new createjs.Bitmap("assets/images/btnSpin.fw.png");
     btnSpin.x = 270;
     btnSpin.y = 362 + 7;
+
     //Event Listener (Spin Button)
     btnSpin.addEventListener("click", btnSpinClicked);
     btnSpin.addEventListener("mouseout", buttonOut);
@@ -470,8 +468,7 @@ function createGUI()
     payoutContainer.y = 313 - 11;
     payoutContainer.addChild(payoutTxt);
     
-
-
+    //adding the objects to the game
     game.addChild(background);
     game.addChild(btnBetMax);
     game.addChild(btnBetOne);
@@ -483,6 +480,7 @@ function createGUI()
     game.addChild(betContainer);
     game.addChild(payoutContainer);
 
+    //adding the reelcontainers to the game
     for (var index = 0; index < 3; index++)
     {
     reelContainers[index] = new createjs.Container();
@@ -493,23 +491,24 @@ function createGUI()
     reelContainers[0].x = 105 - 8;
     reelContainers[0].y = 217 - 10;
 
-
     //reelContainers[1] = new createjs.Container();
     reelContainers[1].x = 176 - 8;
     reelContainers[1].y = 217 - 10;
 
-
     //reelContainers[2] = new createjs.Container();
     reelContainers[2].x = 246 - 8;
     reelContainers[2].y = 217 - 10;
-    
 }
 
 function main() {
 
     game = new createjs.Container();
-   
     reelContainers = new createjs.Container();
+
+    //Registering Sounds
+    createjs.Sound.registerSound("assets/audio/spin.wav", "spinSound", 1);
+    createjs.Sound.registerSound("assets/audio/win.wav", "winSound", 1);
+
     createGUI();
 
     stage.addChild(game);
